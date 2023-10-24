@@ -2,7 +2,7 @@ pipeline{
     agent any
 
     environment {
-        dockerHubRegistry = 'dokerdongju/docker'
+        dockerHubRegistry = 'dokerdongju/jenkin_test'
         dockerHubRegistryCredential = 'docker-hub'
         githubCredential = 'github'
     }
