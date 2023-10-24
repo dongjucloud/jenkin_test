@@ -2,7 +2,7 @@ pipeline{
     agent any
 
     environment {
-        dockerHubRegistry = 'skarltjr/k8s'
+        dockerHubRegistry = 'dokerdongju/docker'
         dockerHubRegistryCredential = 'docker-hub'
         githubCredential = 'github'
     }
