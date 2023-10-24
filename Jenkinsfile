@@ -71,37 +71,4 @@ pipeline{
                     }
             }
         }
-        stage('K8S Manifest Update') {
-            steps {
-                sh "ls"
-                sh 'mkdir -p gitOpsRepo'
-                dir("gitOpsRepo")
-                {
-                    git branch: "main",
-                    credentialsId: githubCredential,
-                    url: 'https://github.com/dongjucloud/manifests.git'
-                    sh "git config --global user.email dongju08@naver.com"
-                    sh "git config --global user.name dongju08"
-                    sh "sed -i 's/docker:.*\$/docker:${currentBuild.number}/' deployment.yaml"
-                    sh "git add deployment.yaml"
-                    sh "git commit -m '[UPDATE] k8s ${currentBuild.number} image versioning'"
 
-                    withCredentials([gitUsernamePassword(credentialsId: githubCredential,
-                                     gitToolName: 'git-tool')]) {
-                        sh "git remote set-url origin https://github.com/dongjucloud/manifests.git"
-                        sh "git push -u origin main"
-                    }
-                }
-            }
-            post {
-                    failure {
-                      echo 'K8S Manifest Update failure !'
-                    }
-                    success {
-                      echo 'K8S Manifest Update success !'
-                    }
-            }
-        }
-
-    }
-}
