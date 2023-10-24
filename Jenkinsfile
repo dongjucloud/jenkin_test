@@ -80,13 +80,12 @@ pipeline{
                     git branch: "main",
                     credentialsId: githubCredential,
                     url: 'https://github.com/dongjucloud/manifests.git'
-                    sh "sed -i 's/k8s:.*\$/k8s:${currentBuild.number}/' deployment.yaml"
+                    sh "git config --global user.email dongju08@naver.com"
+                    sh "git config --global user.name dongjucloud"
+                    sh "sed -i 's/docker:.*\$/docker:${currentBuild.number}/' deployment.yaml"
                     sh "git add deployment.yaml"
                     sh "git commit -m '[UPDATE] k8s ${currentBuild.number} image versioning'"
-                     sshagent(credentials: ['19bdc43b-f3be-4cb9-aa1d-9896f503e3e8']) {
-                         sh "git remote set-url origin github.com/dongjucloud/manifests.git"
-                         sh "git push -u origin main"
-                     }
+
                     withCredentials([gitUsernamePassword(credentialsId: githubCredential,
                                      gitToolName: 'git-tool')]) {
                         sh "git remote set-url origin https://github.com/dongjucloud/manifests.git"
@@ -105,4 +104,4 @@ pipeline{
         }
 
     }
-}        
+}
